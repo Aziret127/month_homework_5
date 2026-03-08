@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.db.models import Avg
 from .models import Product, Category, Review
-
+from rest_framework.exceptions import ValidationError
 
 class ProductDetailSerializer(serializers.ModelSerializer):
     class Meta:
@@ -50,9 +50,9 @@ class CategoryListSerializer(serializers.ModelSerializer):
         model = Category
         fields = 'id name products_count'.split()
 
-    def get_products_count(self, obj):
+   
+    def get_products_count(self, obj): 
         return obj.product_set.count()
-
 
 class ReviewDetailSerializer(serializers.ModelSerializer):
     class Meta:
@@ -65,3 +65,25 @@ class ReviewListSerializer(serializers.ModelSerializer):
         model = Review
         fields = 'id text product stars'.split()
 
+
+class ProductValidateSerializer(serializers.Serializer):
+    title = serializers.CharField(max_length=255)
+    description = serializers.CharField()
+    price = serializers.DecimalField(max_digits=10, decimal_places=2)
+    category_id = serializers.IntegerField()
+    review = ReviewInlineSerializer(many=True, read_only=True)
+
+    def validate_category_id(self, category_id):
+        try:
+            Category.objects.get(id=category_id)
+        except Category.DoesNotExist:
+            raise ValidationError(f"Category with id {category_id} not found")
+        return category_id
+    
+class CategoryValidateSerializer(serializers.Serializer):
+    name = serializers.CharField()
+
+class ReviewValidateSerializer(serializers.Serializer):
+    text = serializers.CharField()
+    product = serializers.IntegerField()
+    stars = serializers.IntegerField()
