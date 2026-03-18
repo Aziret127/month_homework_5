@@ -1,3 +1,4 @@
+
 from rest_framework import serializers
 from django.db.models import Avg
 from .models import Product, Category, Review
@@ -50,7 +51,6 @@ class CategoryListSerializer(serializers.ModelSerializer):
         model = Category
         fields = 'id name products_count'.split()
 
-   
     def get_products_count(self, obj): 
         return obj.product_set.count()
 
