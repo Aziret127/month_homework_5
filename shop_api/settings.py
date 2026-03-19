@@ -39,8 +39,16 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'product',
+    'users',
+    'rest_framework.authtoken',
+
 ]
 
+REST_FRAMEWORK ={
+     'DEFAULT_AUTHENTICATION_CLASSES':[
+        'rest_framework.authentication.TokenAuthentication'
+    ]
+}
 # Use BigAutoField for auto-created primary keys (matches existing migrations).
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -52,7 +60,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'querycount.middleware.QueryCountMiddleware',
+    # 'querycount.middleware.QueryCountMiddleware',
 ]
 
 QUERYCOUNT = {

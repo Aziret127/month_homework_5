@@ -34,6 +34,7 @@ urlpatterns = [
     path('api/v1/category/<int:pk>/', include(router.urls)),
     path('api/v1/reviews/', include(router.urls)),
     path('api/v1/review/<int:pk>/', include(router.urls)),
+    path('api/v1/users/', include('users.urls')),
 ]
 
 
